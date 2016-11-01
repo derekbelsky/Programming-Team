@@ -1,0 +1,74 @@
+import java.util.Scanner;
+
+
+public class WeddingShopping2 // Bottom up
+{
+	
+	public static void main(String[] args)
+	{
+		int TC, score, M, C, K;
+		
+		
+		
+		
+		Scanner sc = new Scanner(System.in);
+		TC = sc.nextInt();
+		while(TC>0)
+		{
+			int[][] price= new int[25][25];
+			boolean [][] can_reach = new boolean[210][25];
+			
+			M =sc.nextInt();
+			C =sc.nextInt();
+			for(int i = 0; i< C; i++)
+			{
+				K = sc.nextInt();
+				price[i][0] = K;
+				for(int j = 1; j<= K; j++)
+				{
+					price[i][j] =  sc.nextInt();
+				}
+			}
+			
+			for(int i = 1; i<=price[0][0]; i++)
+			{
+				if(!(M-price[0][i] < 0))
+				{
+					can_reach[M-price[0][i]][0] = true;
+			
+				}
+			}
+			for(int j = 1; j<C; j++)
+			{
+				for(int i = 0; i<M; i++)
+				{
+					if (can_reach[i][j-1])
+					{	
+						for(int l = 1; l<=price[j][0]; l++)
+						{
+							if(i - price[j][l] >= 0)
+							{	
+								can_reach[i-price[j][l]][j] = true;
+						
+							}
+					
+						}
+					}
+			
+				}
+			}
+			int n;
+			for(n =0; n<= M && !can_reach[n][C-1]; n++);
+			if(n == M + 1)
+			{
+				System.out.println("No solution");
+			} else 
+			{
+				System.out.println(M-n);
+			}
+			TC --;
+		}
+
+	}
+	
+}
