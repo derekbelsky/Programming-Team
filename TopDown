@@ -1,0 +1,75 @@
+import java.util.Scanner;
+import java.math.*;
+
+public class WeddingShopping // Top - Down
+{
+
+	public static int M, C, K; 
+	public static int [][] price = new int[21][21];
+	public static int [][] memo = new int[201][21];
+	public static void main(String[] args) 
+	{
+			int TC, score;
+			
+			Scanner sc = new Scanner(System.in);
+			TC = sc.nextInt();
+			while(TC>0)
+			{
+				M =sc.nextInt();
+				C =sc.nextInt();
+				for(int i = 0; i< C; i++)
+				{
+					K = sc.nextInt();
+					price[i][0] = K;
+					for(int j = 1; j<= K; j++)
+					{
+						price[i][j] =  sc.nextInt();
+					}
+				}
+				
+				for(int i = 0; i<201; i++)
+				{
+					for(int j = 0; j<21; j++)
+					{
+						memo[i][j] = -1;
+					}
+				}
+				
+				score = shop(M, 0);    // begin the top-down DP
+				if(score < 0)
+				{
+					System.out.println("no solution");
+				}
+				else
+				{
+					System.out.println(score);
+				}
+				TC --;
+				
+			}
+	}
+	
+	static int shop(int money_left, int garment_id)
+	{
+		if(money_left < 0)
+		{
+			return -1000000000;
+		}
+		if(garment_id == C)
+		{
+			return M - money_left;
+		}
+		if(memo[money_left][garment_id] != -1)
+		{
+			return memo[money_left][garment_id];
+		}
+		int max_value = -1000000000;
+		for(int model = 1; model <= price[garment_id][0]; model++)
+		{
+			max_value = Math.max(max_value, shop(money_left-price[garment_id][model], garment_id +1));
+		}
+		return memo[money_left][garment_id] = max_value;
+	}
+	
+
+}
